@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.praxder</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict/>
+	<key>createdby</key>
+	<string>Adam Smith</string>
+	<key>description</key>
+	<string>Instantly print synonyms and antonyms</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>SynAnt</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>syn</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>searchWord=$1
+
+getSynonyms() {
+	wn $searchWord -s -syns$1 | # Get words from WordNet
+	grep -o "\w\+#\d\+" | # Filter to synonyms
+	sed -E 's/#.+//g' | # Get rid of each words synset number
+	awk\
+	-v "searchWord=$searchWord"\
+	-v "prefix=$2"\
+	-v "shouldCapitalize=$shouldCapitalize"\
+	'{	
+		if (shouldCapitalize) {
+			synonym=toupper(substr($0, 1, 1)) tolower(substr($0, 2));
+		} else {
+			synonym=$0;
+		}
+				
+
+		if (!seen[$0] &amp;&amp; $0 != searchWord) {
+			printf("{\"title\": \"%s %s\"},", prefix, synonym); 
+		}
+ 
+		seen[$0]++; 
+	}'
+}
+
+verbs=$(getSynonyms "v" "$verbPrefix")
+nouns=$(getSynonyms "n" "$nounPrefix")
+adjectives=$(getSynonyms "a" "$adjectivePrefix")
+adverbs=$(getSynonyms "r" "$adverbPrefix")
+
+cat &lt;&lt; EOB
+{"items": [$verbs$nouns$adjectives$adverbs]}</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>List synonyms for a single word</string>
+				<key>title</key>
+				<string>Synonym</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A635771B-99E8-4BA3-94A4-E69FEAB852CD</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>A simple workflow that uses the Princeton WordNet command line utility to list synonyms and antonyms.</string>
+	<key>uidata</key>
+	<dict>
+		<key>A635771B-99E8-4BA3-94A4-E69FEAB852CD</key>
+		<dict>
+			<key>xpos</key>
+			<real>150</real>
+			<key>ypos</key>
+			<real>285</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>[V]</string>
+				<key>placeholder</key>
+				<string>[V]</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>A prefix for all verbs listed. Ex: "[V] run"</string>
+			<key>label</key>
+			<string>Verb Prefix</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>verbPrefix</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>[N]</string>
+				<key>placeholder</key>
+				<string>[N]</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>A prefix for all nouns listed. Ex: "[N] taco"</string>
+			<key>label</key>
+			<string>Noun Prefix</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>nounPrefix</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>[A]</string>
+				<key>placeholder</key>
+				<string>[A]</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>A prefix for all adjectives listed. Ex: "[A] tasty"</string>
+			<key>label</key>
+			<string>Adjective Prefix</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>adjectivePrefix</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>[R]</string>
+				<key>placeholder</key>
+				<string>[R]</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>A prefix for all adverbs listed. Ex: "[R] quickly"</string>
+			<key>label</key>
+			<string>Adverb Prefix</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>adverbPrefix</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>Ex: unchecked: "[N] taco" - checked: "[N] Taco"</string>
+			<key>label</key>
+			<string>Should Capitalize Words</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>shouldCapitalize</string>
+		</dict>
+	</array>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string>praxder.com</string>
+</dict>
+</plist>
