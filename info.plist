@@ -101,7 +101,15 @@ cat &lt;&lt; EOB
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>A simple workflow that uses the Princeton WordNet command line utility to list synonyms and antonyms.</string>
+	<string>A simple workflow that uses the Princeton WordNet command line utility to list synonyms and antonyms.
+
+TODO:
+- Outputs (copy, paste to frontmost application, use word as new search, etc.)
+- Limit results to N per type or N total
+- Update icon?
+- Antonyms
+- Tune Alfred parameters
+- Backup for fetching online</string>
 	<key>uidata</key>
 	<dict>
 		<key>A635771B-99E8-4BA3-94A4-E69FEAB852CD</key>
@@ -218,8 +226,6 @@ cat &lt;&lt; EOB
 			<string>shouldCapitalize</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>1.0</string>
 	<key>webaddress</key>
