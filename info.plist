@@ -109,7 +109,9 @@ TODO:
 - Update icon?
 - Antonyms
 - Tune Alfred parameters
-- Backup for fetching online</string>
+- Backup for fetching online
+- Update license
+- Post release on GH and Alfred forums</string>
 	<key>uidata</key>
 	<dict>
 		<key>A635771B-99E8-4BA3-94A4-E69FEAB852CD</key>
